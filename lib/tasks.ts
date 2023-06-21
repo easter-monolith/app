@@ -4,6 +4,7 @@ export enum Tasks {
   Multiply = 'multiply',
   Redeem = 'redeem',
   Renew = 'renew',
+  TBC = 'TBC',
   Topup = 'topup',
 }
 
@@ -13,6 +14,7 @@ export const EnabledTasks: Record<string, boolean> = {
   [Tasks.Multiply]: false,
   [Tasks.Redeem]: true,
   [Tasks.Renew]: false,
+  [Tasks.TBC]: true,
   [Tasks.Topup]: false,
 }
 
@@ -22,5 +24,6 @@ export const LightningEnabledTasks: Record<string, boolean> = {
   [Tasks.Multiply]: false,
   [Tasks.Redeem]: true,
   [Tasks.Renew]: false,
+  [Tasks.TBC]: false,
   [Tasks.Topup]: false,
 }
