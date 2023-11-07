@@ -27,13 +27,11 @@ export const swapDepositAmountOutOfBounds = (amount = 0): boolean =>
 
 // calculate boltz fees for a given amount
 export const submarineSwapBoltzFees = (amount = 0): number => {
-  const minersFee = 340
-  const percentage = 1.005
-  const invoiceAmount = new Decimal(amount)
-    .minus(minersFee)
-    .div(percentage)
-    .toNumber()
-  return Decimal.ceil(amount - invoiceAmount).toNumber()
+  const minersFee = 147
+  const percentage = 0.001
+  return Decimal.ceil(
+    new Decimal(amount).mul(percentage).add(minersFee),
+  ).toNumber()
 }
 
 // return data for given tag in given invoice
