@@ -47,7 +47,7 @@ export type ReverseSubmarineSwapResponse = {
 export const boltzUrl: Record<NetworkString, string> = {
   regtest: 'http://localhost:9090',
   testnet: 'https://testnet.boltz.exchange/api',
-  liquid: 'https://boltz.exchange/api',
+  liquid: 'https://api.boltz.exchange',
 }
 
 export default class Boltz {
@@ -95,6 +95,7 @@ export default class Boltz {
   private callCreateSwap = async (
     params: CreateSwapCommonRequest,
   ): Promise<CreateSwapCommonResponse & any> => {
+    console.warn('params', params)
     return this.postApi(`${this.url}/createswap`, params)
   }
 
