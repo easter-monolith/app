@@ -1,9 +1,14 @@
 import { prettyQuantity } from 'lib/pretty'
 
-const TBCInfo = ({ payment }: any) => {
+interface TBCInfoProps {
+  amount: number
+  fees: number
+}
+
+const TBCInfo = ({ amount, fees }: any) => {
   return (
     <div className="is-box has-pink-border is-size-7">
-      {!payment.amount ? (
+      {!amount ? (
         <p>Waiting for invoice</p>
       ) : (
         <div className="level">
@@ -20,12 +25,10 @@ const TBCInfo = ({ payment }: any) => {
           <div className="level-right">
             <div className="level-item has-text-right">
               <div className="has-text-right">
-                <p>{prettyQuantity(payment.amount, 8, 8)}</p>
-                <p>{prettyQuantity(payment.boltzFees, 8, 8)}</p>
+                <p>{prettyQuantity(amount, 8, 8)}</p>
+                <p>{prettyQuantity(fees, 8, 8)}</p>
                 <hr />
-                <p>
-                  {prettyQuantity(payment.amount + payment.boltzFees, 8, 8)}
-                </p>
+                <p>{prettyQuantity(amount + fees, 8, 8)}</p>
               </div>
             </div>
           </div>
