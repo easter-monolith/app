@@ -15,7 +15,7 @@ const TBC = () => {
     const amountInAddress = address.split('amount=')?.[1]
     if (!amountInAddress) throw new Error('Invalid address format')
     const amount = toSatoshis(Number(amountInAddress), 8)
-    const boltzFees = getBoltzFees(amount, 'lightning')
+    const boltzFees = getBoltzFees(amount)
     setAmount(amount)
     setFees(boltzFees)
   }

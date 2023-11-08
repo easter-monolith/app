@@ -27,7 +27,7 @@ const InvoiceModal = ({ contract, handler }: InvoiceModalProps) => {
   const { collateral } = contract
 
   const amount = collateral.quantity
-  const boltzFees = getBoltzFees(amount, 'lightning')
+  const boltzFees = getBoltzFees(amount)
   const invoiceAmount = amount - boltzFees
 
   const handleChange = (e: any) => {
