@@ -5,7 +5,6 @@ import { fromSatoshis } from 'lib/utils'
 import { feeAmount, swapFeeAmount } from './constants'
 import Boltz, { SubmarineSwapResponse } from './boltz'
 import { randomBytes } from 'crypto'
-import Decimal from 'decimal.js'
 import { NetworkString } from 'marina-provider'
 import { bech32 } from 'bech32'
 
@@ -24,15 +23,6 @@ export const DEPOSIT_LIGHTNING_LIMITS = {
 export const swapDepositAmountOutOfBounds = (amount = 0): boolean =>
   amount > DEPOSIT_LIGHTNING_LIMITS.maximal ||
   amount < DEPOSIT_LIGHTNING_LIMITS.minimal
-
-// calculate boltz fees for a given amount
-export const submarineSwapBoltzFees = (amount = 0): number => {
-  const minersFee = 147
-  const percentage = 0.001
-  return Decimal.ceil(
-    new Decimal(amount).mul(percentage).add(minersFee),
-  ).toNumber()
-}
 
 // return data for given tag in given invoice
 export const getInvoiceTag = (invoice: string, tag: string): TagData => {

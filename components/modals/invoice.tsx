@@ -1,16 +1,16 @@
-import { feeAmount, swapFeeAmount } from 'lib/constants'
+import { feeAmount } from 'lib/constants'
 import { prettyNumber } from 'lib/pretty'
 import {
   fetchInvoiceFromLNURL,
   getInvoiceExpireDate,
   getInvoiceValue,
-  submarineSwapBoltzFees,
 } from 'lib/swaps'
 import { Contract } from 'lib/types'
 import { extractError, fromSatoshis, toSatoshis } from 'lib/utils'
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import Modal, { ModalIds } from './modal'
 import CopyButton from 'components/buttons/copy'
+import { BoltzContext } from 'components/providers/boltz'
 
 interface InvoiceModalProps {
   contract: Contract
@@ -18,6 +18,7 @@ interface InvoiceModalProps {
 }
 
 const InvoiceModal = ({ contract, handler }: InvoiceModalProps) => {
+  const { getBoltzFees } = useContext(BoltzContext)
   const [invoice, setInvoice] = useState('')
   const [text, setText] = useState('')
   const [valid, setValid] = useState(false)
@@ -25,8 +26,8 @@ const InvoiceModal = ({ contract, handler }: InvoiceModalProps) => {
 
   const { collateral } = contract
 
-  const amount = collateral.quantity - swapFeeAmount
-  const boltzFees = submarineSwapBoltzFees(amount)
+  const amount = collateral.quantity
+  const boltzFees = getBoltzFees(amount, 'lightning')
   const invoiceAmount = amount - boltzFees
 
   const handleChange = (e: any) => {

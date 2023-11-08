@@ -9,6 +9,7 @@ import WeblnModal from 'components/modals/webln'
 import { WeblnProvider } from 'components/providers/webln'
 import MintLimitModal from 'components/modals/mintLimit'
 import { ConfigProvider } from 'components/providers/config'
+import { BoltzProvider } from 'components/providers/boltz'
 
 interface LayoutProps {
   children: ReactNode
@@ -29,20 +30,22 @@ export default function Layout({ children }: LayoutProps) {
       <WeblnProvider>
         <ConfigProvider>
           <ContractsProvider>
-            <UseDesktopBanner />
-            <div className="is-hidden-touch">
-              <Banner />
-              <Navbar />
-              <main>
-                <div className="container">
-                  <Breadcrumbs />
-                </div>
-                <div className="container">{children}</div>
-              </main>
-              <Footer />
-              <WeblnModal />
-              <MintLimitModal />
-            </div>
+            <BoltzProvider>
+              <UseDesktopBanner />
+              <div className="is-hidden-touch">
+                <Banner />
+                <Navbar />
+                <main>
+                  <div className="container">
+                    <Breadcrumbs />
+                  </div>
+                  <div className="container">{children}</div>
+                </main>
+                <Footer />
+                <WeblnModal />
+                <MintLimitModal />
+              </div>
+            </BoltzProvider>
           </ContractsProvider>
         </ConfigProvider>
       </WeblnProvider>

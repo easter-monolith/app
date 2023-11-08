@@ -44,6 +44,39 @@ export type ReverseSubmarineSwapResponse = {
   timeoutBlockHeight: number
 }
 
+export type GetPairResponse = {
+  hash: string
+  rate: number
+  limits: {
+    maximal: number
+    minimal: number
+    maximalZeroConf: {
+      baseAsset: number
+      quoteAsset: number
+    }
+  }
+  fees: {
+    percentage: number
+    percentageSwapIn: number
+    minerFees: {
+      baseAsset: {
+        normal: number
+        reverse: {
+          claim: number
+          lockup: number
+        }
+      }
+      quoteAsset: {
+        normal: number
+        reverse: {
+          claim: number
+          lockup: number
+        }
+      }
+    }
+  }
+}
+
 export const boltzUrl: Record<NetworkString, string> = {
   regtest: 'http://localhost:9090',
   testnet: 'https://testnet.boltz.exchange/api',
@@ -86,7 +119,7 @@ export default class Boltz {
     return this.callCreateSwap(params)
   }
 
-  getPair = async (pair: string) => {
+  getPair = async (pair: string): Promise<GetPairResponse | undefined> => {
     const data = await this.getApi(`${this.url}/getpairs`)
     if (!data?.pairs?.[pair]) return
     return data.pairs[pair]
