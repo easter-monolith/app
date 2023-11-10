@@ -12,10 +12,14 @@ import Decimal from 'decimal.js'
 
 interface BoltzContextProps {
   getBoltzFees: (amountInSats: number) => number
+  getBoltzLimits: () => any
+  isBoltzAmountOutOfBounds: (amountInSats: number) => boolean
 }
 
 export const BoltzContext = createContext<BoltzContextProps>({
   getBoltzFees: () => 0,
+  getBoltzLimits: () => {},
+  isBoltzAmountOutOfBounds: () => true,
 })
 
 export const BoltzProvider = ({ children }: { children: ReactNode }) => {
@@ -43,8 +47,17 @@ export const BoltzProvider = ({ children }: { children: ReactNode }) => {
     ).toNumber()
   }
 
+  const getBoltzLimits = () => pair?.limits
+
+  const isBoltzAmountOutOfBounds = (amount: number): boolean => {
+    if (!pair) return true
+    return amount > pair.limits.maximal || amount < pair.limits.minimal
+  }
+
   return (
-    <BoltzContext.Provider value={{ getBoltzFees }}>
+    <BoltzContext.Provider
+      value={{ getBoltzFees, getBoltzLimits, isBoltzAmountOutOfBounds }}
+    >
       {children}
     </BoltzContext.Provider>
   )

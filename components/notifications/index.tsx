@@ -10,12 +10,12 @@ import { WalletContext } from 'components/providers/wallet'
 import ConnectWalletNotification from './connectWallet'
 import LowCollateralAmountNotification from './lowCollateralAmount'
 import { getAssetBalance } from 'lib/marina'
-import { swapDepositAmountOutOfBounds } from 'lib/swaps'
 import OutOfBoundsNotification from './outOfBounds'
 import { LightningEnabledTasks, Tasks } from 'lib/tasks'
 import { ConfigContext } from 'components/providers/config'
 import MintLimitReachedNotification from './mintLimitReached'
 import { fromSatoshis } from 'lib/utils'
+import { BoltzContext } from 'components/providers/boltz'
 
 interface NotificationsProps {
   contract: Contract
@@ -32,6 +32,7 @@ const Notifications = ({
 }: NotificationsProps) => {
   const { balances, connected } = useContext(WalletContext)
   const { config } = useContext(ConfigContext)
+  const { isBoltzAmountOutOfBounds } = useContext(BoltzContext)
 
   const [belowDustLimit, setBelowDustLimit] = useState(false)
   const [collateralTooLow, setCollateralTooLow] = useState(false)
@@ -53,7 +54,7 @@ const Notifications = ({
     if (!asset) return
     const balance = getAssetBalance(asset, balances)
     setNotEnoughFunds(connected && spendQuantity > balance)
-    setOutOfBounds(swapDepositAmountOutOfBounds(spendQuantity))
+    setOutOfBounds(isBoltzAmountOutOfBounds(spendQuantity))
     setCollateralTooLow(spendQuantity < feeAmount + minDustLimit)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [contract.synthetic.quantity])

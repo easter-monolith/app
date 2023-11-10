@@ -1,6 +1,5 @@
 import Image from 'next/image'
 import { Contract } from 'lib/types'
-import { swapDepositAmountOutOfBounds } from 'lib/swaps'
 import { WalletContext } from 'components/providers/wallet'
 import { useContext } from 'react'
 import OutOfBoundsMessage from 'components/messages/outOfBounds'
@@ -11,6 +10,7 @@ import Title from 'components/title'
 import { operationFromTask } from 'lib/utils'
 import { LightningEnabledTasks } from 'lib/tasks'
 import { TICKERS } from 'lib/assets'
+import { BoltzContext } from 'components/providers/boltz'
 
 interface ChannelButtonProps {
   name: string
@@ -25,6 +25,7 @@ interface ChannelProps {
 
 const Channel = ({ amount, contract, task }: ChannelProps) => {
   const { marina } = useContext(WalletContext)
+  const { isBoltzAmountOutOfBounds } = useContext(BoltzContext)
   if (!marina) throw new Error('Missing marina provider')
 
   const { collateral } = contract
@@ -32,7 +33,7 @@ const Channel = ({ amount, contract, task }: ChannelProps) => {
   const quantity = amount || collateral.quantity
 
   const lightningOutOfBounds =
-    LightningEnabledTasks[task] && swapDepositAmountOutOfBounds(quantity)
+    LightningEnabledTasks[task] && isBoltzAmountOutOfBounds(quantity)
   const lightningButtonEnabled =
     LightningEnabledTasks[task] &&
     ticker === TICKERS.lbtc &&

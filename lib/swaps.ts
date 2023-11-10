@@ -2,7 +2,6 @@ import type { TagData } from 'bolt11'
 import bolt11 from 'bolt11'
 import { address, crypto, script, payments } from 'liquidjs-lib'
 import { fromSatoshis } from 'lib/utils'
-import { feeAmount, swapFeeAmount } from './constants'
 import Boltz, { SubmarineSwapResponse } from './boltz'
 import { randomBytes } from 'crypto'
 import { NetworkString } from 'marina-provider'
@@ -10,19 +9,7 @@ import { bech32 } from 'bech32'
 
 // docs: https://docs.boltz.exchange/en/latest/api/
 
-// lightning swap invoice amount limit (in satoshis)
-export const DEFAULT_LIGHTNING_LIMITS = { maximal: 4294967, minimal: 50000 }
-export const DEPOSIT_LIGHTNING_LIMITS = {
-  maximal: DEFAULT_LIGHTNING_LIMITS.maximal - feeAmount - swapFeeAmount,
-  minimal: DEFAULT_LIGHTNING_LIMITS.minimal - feeAmount - swapFeeAmount,
-}
-
 // UTILS
-
-// check if amount is out of bounds for lightning swap
-export const swapDepositAmountOutOfBounds = (amount = 0): boolean =>
-  amount > DEPOSIT_LIGHTNING_LIMITS.maximal ||
-  amount < DEPOSIT_LIGHTNING_LIMITS.minimal
 
 // return data for given tag in given invoice
 export const getInvoiceTag = (invoice: string, tag: string): TagData => {

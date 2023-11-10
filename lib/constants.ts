@@ -38,6 +38,5 @@ export const assetPair = `0x${Buffer.from('USD').toString('hex')}`
 
 export const minDustLimit = 500
 export const feeAmount = 500 // fee for regular liquid tx
-export const swapFeeAmount = 500 // fee for Boltz
 
 export const twitterMessage = `I'm using @fuji_money to borrow Fuji USD with #Bitcoin collateral.\n\n🥷 No intermediaries\n🏃‍♀️ Redeem anytime\n\nCheck it out!\n\nhttps://fuji.money`

@@ -1,9 +1,9 @@
+import { BoltzContext } from 'components/providers/boltz'
 import { ConfigContext } from 'components/providers/config'
 import { ContractsContext } from 'components/providers/contracts'
 import { WalletContext } from 'components/providers/wallet'
 import { feeAmount, minDustLimit } from 'lib/constants'
 import { getAssetBalance } from 'lib/marina'
-import { swapDepositAmountOutOfBounds } from 'lib/swaps'
 import { LightningEnabledTasks, Tasks } from 'lib/tasks'
 import { Contract } from 'lib/types'
 import { fromSatoshis } from 'lib/utils'
@@ -20,6 +20,7 @@ const BorrowButton = ({ contract, minRatio, ratio }: BorrowButtonProps) => {
   const { balances, connected } = useContext(WalletContext)
   const { config } = useContext(ConfigContext)
   const { setNewContract } = useContext(ContractsContext)
+  const { isBoltzAmountOutOfBounds } = useContext(BoltzContext)
 
   const [enoughFunds, setEnoughFunds] = useState(false)
   const [mintLimitReached, setMintLimitReached] = useState(false)
@@ -35,7 +36,7 @@ const BorrowButton = ({ contract, minRatio, ratio }: BorrowButtonProps) => {
     const needed = contract.collateral.quantity
     const enoughFundsOnMarina = connected && funds > needed
     if (LightningEnabledTasks[Tasks.Borrow]) {
-      const outOfBounds = swapDepositAmountOutOfBounds(needed)
+      const outOfBounds = isBoltzAmountOutOfBounds(needed)
       setEnoughFunds(enoughFundsOnMarina || !outOfBounds)
     } else {
       setEnoughFunds(enoughFundsOnMarina)

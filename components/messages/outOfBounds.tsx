@@ -1,7 +1,8 @@
+import { BoltzContext } from 'components/providers/boltz'
 import { prettyNumber } from 'lib/pretty'
-import { DEPOSIT_LIGHTNING_LIMITS } from 'lib/swaps'
 import { Asset } from 'lib/types'
 import { fromSatoshis } from 'lib/utils'
+import { useContext } from 'react'
 
 interface OutOfBoundsMessageProps {
   asset: Asset
@@ -9,7 +10,8 @@ interface OutOfBoundsMessageProps {
 }
 
 function OutOfBoundsMessage({ asset, quantity }: OutOfBoundsMessageProps) {
-  const { maximal, minimal } = DEPOSIT_LIGHTNING_LIMITS
+  const { getBoltzLimits } = useContext(BoltzContext)
+  const { maximal, minimal } = getBoltzLimits()
 
   const min = fromSatoshis(minimal, asset.precision)
   const max = fromSatoshis(maximal, asset.precision)
