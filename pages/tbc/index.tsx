@@ -9,7 +9,7 @@ import OnlyMainnet from 'components/messages/onlyMainnet'
 const TheBitcoinCompany: NextPage = () => {
   const { network } = useContext(WalletContext)
 
-  if (network != 'liquid') return <OnlyMainnet />
+  // if (network != 'liquid') return <OnlyMainnet />
   if (!EnabledTasks[Tasks.TBC]) return <NotAllowed />
 
   return <TBC />

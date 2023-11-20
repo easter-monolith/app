@@ -2,6 +2,7 @@ import b58 from 'bs58check'
 import Decimal from 'decimal.js'
 import { readUInt64LE, writeUInt64LE } from 'liquidjs-lib/src/bufferutils'
 import { Tasks } from './tasks'
+import { Utxo } from 'marina-provider'
 
 // The 3 following function are need to transform encoding
 // for contractParams.priceLevel and contractParams.setupTimestamp:
@@ -173,3 +174,26 @@ export function encodeExpirationTimeout(seconds: number): Buffer {
     SEQUENCE_LOCKTIME_TYPE_FLAG | (seconds >> SEQUENCE_LOCKTIME_GRANULARITY)
   return Buffer.from(asNumber.toString(16), 'hex').reverse()
 }
+
+/**
+ * Generates a random id with 'length' characters
+ * @param length number
+ * @returns string
+ */
+export function makeid(length: number): string {
+  let result = ''
+  const characters =
+    'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
+  const charactersLength = characters.length
+  for (let i = 0; i < length; i++) {
+    result += characters.charAt(Math.floor(Math.random() * charactersLength))
+  }
+  return result
+}
+
+/**
+ * Returns value for a given utxo
+ * @param utxo Utxo
+ * @returns number
+ */
+export const utxoValue = (utxo: Utxo): number => utxo.blindingData?.value || 0

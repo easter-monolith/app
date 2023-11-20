@@ -11,13 +11,15 @@ import { NetworkString } from 'marina-provider'
 import Decimal from 'decimal.js'
 
 interface BoltzContextProps {
-  getBoltzFees: (amountInSats: number) => number
+  calcBoltzFees: (amountInSats: number) => number
+  getBoltzFees: () => any
   getBoltzLimits: () => any
   isBoltzAmountOutOfBounds: (amountInSats: number) => boolean
 }
 
 export const BoltzContext = createContext<BoltzContextProps>({
-  getBoltzFees: () => 0,
+  calcBoltzFees: () => 0,
+  getBoltzFees: () => {},
   getBoltzLimits: () => {},
   isBoltzAmountOutOfBounds: () => true,
 })
@@ -38,10 +40,13 @@ export const BoltzProvider = ({ children }: { children: ReactNode }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [network])
 
-  const getBoltzFees = (amountInSats: number): number => {
-    if (!pair) return 0
-    const minersFees = pair.fees.minerFees.baseAsset.normal || 0
-    const percentage = pair.fees.percentageSwapIn || 0
+  const getBoltzFees = () => ({
+    minersFees: pair?.fees.minerFees.baseAsset.normal || 0,
+    percentage: pair?.fees.percentageSwapIn || 0,
+  })
+
+  const calcBoltzFees = (amountInSats: number): number => {
+    const { minersFees, percentage } = getBoltzFees()
     return Decimal.ceil(
       new Decimal(amountInSats).mul(percentage).div(100).add(minersFees),
     ).toNumber()
@@ -56,7 +61,12 @@ export const BoltzProvider = ({ children }: { children: ReactNode }) => {
 
   return (
     <BoltzContext.Provider
-      value={{ getBoltzFees, getBoltzLimits, isBoltzAmountOutOfBounds }}
+      value={{
+        calcBoltzFees,
+        getBoltzFees,
+        getBoltzLimits,
+        isBoltzAmountOutOfBounds,
+      }}
     >
       {children}
     </BoltzContext.Provider>

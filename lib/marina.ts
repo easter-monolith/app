@@ -65,7 +65,7 @@ export async function getMainAccountXPubKey(): Promise<string> {
   return ''
 }
 
-async function getCoins(accountID: string): Promise<Utxo[]> {
+export async function getCoins(accountID: string): Promise<Utxo[]> {
   const marina = await getMarinaProvider()
   if (!marina) return []
   return await marina.getCoins([accountID])

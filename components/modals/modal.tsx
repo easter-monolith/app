@@ -16,6 +16,7 @@ export enum ModalIds {
   MarinaDeposit = 'marina-deposit-modal',
   MintLimit = 'mint-limit-modal',
   Redeem = 'redeem-modal',
+  Spend = 'spend-modal',
   Wallets = 'wallets-modal',
   Webln = 'webln-modal',
 }

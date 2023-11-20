@@ -18,7 +18,7 @@ interface InvoiceModalProps {
 }
 
 const InvoiceModal = ({ contract, handler }: InvoiceModalProps) => {
-  const { getBoltzFees } = useContext(BoltzContext)
+  const { calcBoltzFees } = useContext(BoltzContext)
   const [invoice, setInvoice] = useState('')
   const [text, setText] = useState('')
   const [valid, setValid] = useState(false)
@@ -27,7 +27,7 @@ const InvoiceModal = ({ contract, handler }: InvoiceModalProps) => {
   const { collateral } = contract
 
   const amount = collateral.quantity
-  const boltzFees = getBoltzFees(amount)
+  const boltzFees = calcBoltzFees(amount)
   const invoiceAmount = amount - boltzFees
 
   const handleChange = (e: any) => {

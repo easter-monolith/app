@@ -87,6 +87,15 @@ export function getLBTC(network: NetworkString): Asset {
   return { ...asset, id }
 }
 
+export function getFUSD(network: NetworkString): Asset {
+  const id =
+    network === 'liquid'
+      ? '0dea022a8a25abb128b42b0f8e98532bc8bd74f8a77dc81251afcc13168acef7'
+      : '0d86b2f6a8c3b02a8c7c8836b83a081e68b7e2b4bcdfc58981fc5486f59f7518'
+  const asset = assetById[id]
+  return { ...asset, id }
+}
+
 export async function getAssetCirculation(
   asset: Asset,
   network: NetworkString,
