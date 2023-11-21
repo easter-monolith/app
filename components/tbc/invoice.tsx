@@ -1,5 +1,8 @@
 import { prettyQuantity } from 'lib/pretty'
 import { Box } from './components'
+import { useContext } from 'react'
+import { WalletContext } from 'components/providers/wallet'
+import { getLBTC } from 'lib/assets'
 
 interface TBCInvoiceProps {
   invoiceAmount: number
@@ -7,6 +10,12 @@ interface TBCInvoiceProps {
 }
 
 const TBCInvoice = ({ invoiceAmount, boltzFees }: TBCInvoiceProps) => {
+  const { network } = useContext(WalletContext)
+  if (!network) return <></>
+
+  const { precision } = getLBTC(network)
+  const total = invoiceAmount + boltzFees
+
   return (
     <Box>
       {!invoiceAmount ? (
@@ -29,9 +38,9 @@ const TBCInvoice = ({ invoiceAmount, boltzFees }: TBCInvoiceProps) => {
             <div className="level-right">
               <div className="level-item has-text-right">
                 <div className="has-text-right">
-                  <p>{prettyQuantity(invoiceAmount, 8, 8)}</p>
-                  <p>{prettyQuantity(boltzFees, 8, 8)}</p>
-                  <p>{prettyQuantity(invoiceAmount + boltzFees, 8, 8)}</p>
+                  <p>{prettyQuantity(invoiceAmount, precision, precision)}</p>
+                  <p>{prettyQuantity(boltzFees, precision, precision)}</p>
+                  <p>{prettyQuantity(total, precision, precision)}</p>
                 </div>
               </div>
             </div>
